@@ -55,7 +55,7 @@ To produce all the embedding matrices and save them to the local directory. Addi
 
 run: 
 
-```skip.py --log_dir=path/to/log/folder --file_dir==/path/to/chunked/train_* --emb_num=300 --num_chunks=20```
+```python skip.py --log_dir=path/to/log/folder --file_dir==/path/to/chunked/train_* --emb_num=300 --num_chunks=20```
 
 This script will produce two pickle files, onw will be the embedding matrix and the second will be the labels. These in turn will be used by the emb.py file to produce the word embeddings for the model, which will then be loaded into ```run_summarization.py```.
 
