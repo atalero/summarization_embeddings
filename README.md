@@ -51,11 +51,11 @@ python run_summarization.py --mode=train --data_path=/path/to/chunked/train_* --
 ```
 **Word2Vec (skipgram)**
 
-To produce all the embedding matrices and save them to the local directory. Additionally the directory of the chucked data, along with embedding dimension size and number of file to read are taken as input. The default embeddin size is 300 and default number of iles is 20, the defatul log directory is a "log" foler in the same directory and it will try to look for data in the "data" directory in the same folder if none is specified.
+To produce all the embedding matrices and save them to the local directory in lag folder. Additionally the directory of the chucked data, along with embedding dimension size and number of file to read are taken as input. The default embeddin size is 300 and default number of iles is 20, the log directory is a "log" folder in the same directory and it will try to look for data in the "data" directory in the same folder if none is specified.
 
 run: 
 
-```python skip.py --log_dir=path/to/log/folder --file_dir==/path/to/chunked/train_* --emb_num=300 --num_chunks=20```
+```python skip.py --file_dir==/path/to/chunked/train_* --emb_num=300 --num_chunks=20```
 
 This script will produce two pickle files, onw will be the embedding matrix and the second will be the labels. These in turn will be used by the emb.py file to produce the word embeddings for the model, which will then be loaded into ```run_summarization.py```.
 
