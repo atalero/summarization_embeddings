@@ -42,7 +42,7 @@ To produce all the embedding matrices and save them to the local directory, run:
 
 ```glove.py <glove_file_name> <path/to/vocab/file> <path/to/save/embedding/pickle> <embedding_dimension(int)>```
 
-This script will produce a pickle file will all the word embeddings, which will then be loaded into ```run_summarization.py```.
+This script will produce a pickle file with all the word embeddings, which will then be loaded into ```run_summarization.py```.
 
 Then add ```--glove_file=<glove_file_name>``` as a flag to run_summarization.py. i.e.
 
@@ -50,6 +50,18 @@ Then add ```--glove_file=<glove_file_name>``` as a flag to run_summarization.py.
 python run_summarization.py --mode=train --data_path=/path/to/chunked/train_* --vocab_path=/path/to/vocab --log_root=/path/to/a/log/directory --exp_name=myexperiment --glove= True --glove_file=<glove_file_name>
 ```
 **Word2Vec (skipgram)**
+
+To produce all the embedding matrices and save them to the local directory, run: 
+
+```skip.py --logdir=log```
+
+This script will produce two pickle files, onw will be the embedding matrix and the second will be the labels. These in turn will be used by the emb.py file to produce the word embeddings for the model, which will then be loaded into ```run_summarization.py```.
+
+Then add ```--glove_file=<glove_file_name>``` as a flag to run_summarization.py. i.e.
+
+```
+python run_summarization.py --mode=train --data_path=/path/to/chunked/train_* --vocab_path=/path/to/vocab --log_root=/path/to/a/log/directory --exp_name=myexperiment --glove= True --glove_file=<glove_file_name>
+```
 
 ## Instructions for Testing
 Testing (decoding) works exactly like it does in the [baseline repo](https://github.com/abisee/pointer-generator) (visit the **Run beam search decoding** and **Evaluate with ROUGE** sections of README.md.
