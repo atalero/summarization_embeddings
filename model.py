@@ -46,8 +46,8 @@ class SummarizationModel(object):
     hps = self._hps
 
     # encoder part
-    if FLAGS.elmo: self._enc_batch = tf.placeholder(tf.int32, [hps.batch_size, hps.max_enc_steps], name='enc_batch')
-    else: self._enc_batch = tf.placeholder(tf.int32, [hps.batch_size, None], name='enc_batch')
+    #if FLAGS.elmo or FLAGS.glove: self._enc_batch = tf.placeholder(tf.int32, [hps.batch_size, hps.max_enc_steps], name='enc_batch')
+    self._enc_batch = tf.placeholder(tf.int32, [hps.batch_size, None], name='enc_batch')
     self._enc_lens = tf.placeholder(tf.int32, [hps.batch_size], name='enc_lens')
     self._enc_padding_mask = tf.placeholder(tf.float32, [hps.batch_size, None], name='enc_padding_mask')
     if FLAGS.pointer_gen:
@@ -218,7 +218,7 @@ class SummarizationModel(object):
 
       # Glove embedding
       if FLAGS.glove:
-        pickle_in = open("./data/glove_matrix-2.dms","rb")
+        pickle_in = open(FLAGS.glove_file,"rb")
         glove_matrix = pickle.load(pickle_in)[:50000]
         glove_cons = tf.constant(glove_matrix, name='glove_cons')
         with tf.variable_scope('embedding'):
@@ -228,15 +228,28 @@ class SummarizationModel(object):
 
           emb_dec_inputs = [tf.nn.embedding_lookup(params=embedding, ids=x) for x in tf.unstack(self._dec_batch, axis=1)]
 
+
+      if FLAGS.skipgram:
+        pickle_in = open("./data/skipgram_matrix.p","rb")
+        skipgram_matrix = pickle.load(pickle_in)[:50000]
+        skipgram_cons = tf.constant(skipgram_matrix, name="skipgram_cons")
+        with tf.variable_scope('embedding'):
+          embedding = tf.get_variable('embedding', dtype=tf.float32, initializer=skipgram_cons,trainable=False)
+          emb_enc_inputs = tf.nn.embedding_lookup(params=embedding, ids=self._enc_batch)
+          emb_dec_inputs = [tf.nn.embedding_lookup(params=embedding, ids=x) for x in tf.unstack(self._dec_batch, axis=1)]
+
+
+
       if FLAGS.elmo:
-        pickle_in = open("./data/word_to_id.p","rb")
-        word_to_id = pickle.load(pickle_in)
+        #pickle_in = open("./data/word_to_id.p","rb")
+        #word_to_id = pickle.load(pickle_in)
         pickle_in = open("./data/id_to_word.p","rb")
         id_to_word = pickle.load(pickle_in)
         table = tf.contrib.lookup.HashTable(tf.contrib.lookup.KeyValueTensorInitializer(list(id_to_word.keys()), list(id_to_word.values())), default_value='[UNK]')
 
         #table.init.run()
         enc_batch_words = table.lookup(self._enc_batch)
+
         dec_batch_words = table.lookup(self._enc_batch)
 
         with tf.variable_scope('embedding'):
@@ -263,6 +276,16 @@ class SummarizationModel(object):
           #dec_vectors, dec_sentence = tf.cond(tf.equal(tf.size(dec_sentence),0), lambda: f2_end(dec_sentence, dec_vectors), lambda: f1_end(dec_sentence, dec_vectors))
 
           #emb_dec_inputs = dec_vectors[1:]
+=======
+        dec_batch_words = table.lookup(self._dec_batch)
+
+        with tf.variable_scope('embedding'):
+          emb_enc_inputs = elmo(inputs={"tokens": enc_batch_words, "sequence_len": tf.constant(hps.max_enc_steps, shape=(hps.batch_size, ))},  signature="tokens", as_dict=True)["elmo"]
+          emb_dec_inputs = elmo(inputs={"tokens": dec_batch_words, "sequence_len": tf.constant(hps.max_dec_steps, shape=(hps.batch_size, ))}, signature="tokens", as_dict=True)["elmo"]
+          emb_dec_inputs_t = [emb_dec_inputs[:,x,:] for x in range(hps.max_dec_steps)]
+          emb_dec_inputs = emb_dec_inputs_t
+          #emb_dec_inputs = [elmo(inputs ={"tokens": dec_batch_words , "sequence_len": tf.constant([hps.batch_size])}, signature="tokens", as_dict=True)["elmo"][0] for x in tf.unstack(dec_batch_words, axis=1)]
+>>>>>>> c122d46ebf67d4e7b9c938004729dbadf11ccc96
 
       # Add embedding matrix (shared by the encoder and decoder inputs)
       #with tf.variable_scope('embedding'):
@@ -362,6 +385,8 @@ class SummarizationModel(object):
     with tf.device("/gpu:0"):
       self._train_op = optimizer.apply_gradients(zip(grads, tvars), global_step=self.global_step, name='train_step')
 
+  def ELMoEmbedding(self,tensor):
+    return elmo(tensor, signature="default", as_dict=True)["elmo"][0]
 
   def build_graph(self):
     """Add the placeholders, model, global step, train_op and summaries to the graph"""
