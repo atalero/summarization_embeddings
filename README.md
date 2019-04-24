@@ -57,12 +57,14 @@ run:
 
 ```python skip.py --file_dir==/path/to/chunked/train_* --emb_num=300 --num_chunks=20```
 
-This script will produce two pickle files, onw will be the embedding matrix and the second will be the labels. These in turn will be used by the emb.py file to produce the word embeddings for the model, which will then be loaded into ```run_summarization.py```.
+This script will produce two pickle files, onw will be the embedding matrix and the second will be the labels. These in turn will be used by the emb.py file to produce the word embeddings for the model. To create the final word embeddings run the meb.py file specifying path to vocab file and also the directory for the embedding file from the previous code which will be in a folder named "log". Additioanlly, you could also specifiy the vocabualry size which by default is 50000. Run:
 
-Then add ```--glove_file=<glove_file_name>``` as a flag to run_summarization.py. i.e.
+```python emb.py --vocab_file=/path/to/vocab --emb_dir=./log --v_size==50000```
+
+which will then be loaded into ```run_summarization.py```.
 
 ```
-python run_summarization.py --mode=train --data_path=/path/to/chunked/train_* --vocab_path=/path/to/vocab --log_root=/path/to/a/log/directory --exp_name=myexperiment --glove= True --glove_file=<glove_file_name>
+python run_summarization.py --mode=train --data_path=/path/to/chunked/train_* --vocab_path=/path/to/vocab --log_root=/path/to/a/log/directory --exp_name=myexperiment --skipgram= True
 ```
 
 ## Instructions for Testing
