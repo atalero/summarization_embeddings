@@ -38,7 +38,7 @@ To only run a baseline model, you simply do not specify a flag for any of these.
 
 **GloVe**
 
-To produce all the embedding matrices and save them to the local directory. Run: 
+To produce all the embedding matrices and save them to the local directory, run: 
 
 ```glove.py <glove_file_name> <path/to/vocab/file> <path/to/save/embedding/pickle> <embedding_dimension(int)>```
 
