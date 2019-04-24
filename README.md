@@ -38,7 +38,11 @@ To only run a baseline model, you simply do not specify a flag for any of these.
 
 **GloVe**
 
-Run ```glove.py <glove_file_name> <path/to/vocab/file> <path/to/save/embedding/pickle> <embedding_dimension(int)>``` to produce all the embedding matrices and save them to the local directory. This script will produce a pickle file will all the word embeddings, which will then be loaded into ```run_summarization.py```.
+To produce all the embedding matrices and save them to the local directory. Run: 
+
+```glove.py <glove_file_name> <path/to/vocab/file> <path/to/save/embedding/pickle> <embedding_dimension(int)>```
+
+This script will produce a pickle file will all the word embeddings, which will then be loaded into ```run_summarization.py```.
 
 Then add ```--glove_file=<glove_file_name>``` as a flag to run_summarization.py. i.e.
 
