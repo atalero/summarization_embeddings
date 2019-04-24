@@ -16,10 +16,10 @@ The Get to the Point Text Summarization algorithm uses a mix of abstractive and 
 
 	This method uses task specific learning. ELMo returns three vectors (one from ELMo embeddings baed on character convolutions, one for a forward language model, backward language model), our model learns the correct task specific weights as defined in the paper.
 
-## Instructions for Running
+## Instructions for Training
 * run on tf version 1.13.1 
 * this version uses Python 3.7
-* use requirements.txt which was producedus from our virtual environment (it may include more dependencies than needed).
+* use ```requirements.txt``` which was produced from our virtual environment (it may include more dependencies than needed).
 * **NOTE that you must change the ```emb_dim``` flag to the dimensions of the vector embedding you are using**
 
 All methods have the same function call (see [repo](https://github.com/abisee/pointer-generator) for more details) :
@@ -47,6 +47,7 @@ python run_summarization.py --mode=train --data_path=/path/to/chunked/train_* --
 ```
 **Word2Vec (skipgram)**
 
-
+## Instructions for Testing
+Testing (decoding) works exactly like it does in the [baseline repo](https://github.com/abisee/pointer-generator) (visit the **Run beam search decoding** and **Evaluate with ROUGE** sections of README.md.
 
 **Authors: [Jaime Campos Salas](https://github.com/jcoeus), [Abdullah Siddique](https://github.com/s-abdullah), [Andres Talero](https://github.com/atalero)**
