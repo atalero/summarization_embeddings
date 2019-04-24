@@ -37,6 +37,7 @@ python run_summarization.py --mode=train --data_path=/path/to/chunked/train_* --
 To only run a baseline model, you simply do not specify a flag for any of these. Note that GLoVe and Word2Vec methods will require data preprocessing. Follow the steps below produce the embedding matrices for both.
 
 **GloVe**
+
 Run ```glove.py glove_file_name``` to produce all the embedding matrices and save them to the local directory. This script will produce a pickle file will all the word embeddings, which will then be loaded into ```run_summarization.py```.
 
 Then add ```--glove_file=<glove_file_name>``` as a flag to run_summarization.py. i.e.
@@ -45,6 +46,7 @@ Then add ```--glove_file=<glove_file_name>``` as a flag to run_summarization.py.
 python run_summarization.py --mode=train --data_path=/path/to/chunked/train_* --vocab_path=/path/to/vocab --log_root=/path/to/a/log/directory --exp_name=myexperiment --glove= True --glove_file=<glove_file_name>
 ```
 **Word2Vec (skipgram)**
+
 
 
 **Authors: [Jaime Campos Salas](https://github.com/jcoeus), [Abdullah Siddique](https://github.com/s-abdullah), [Andres Talero](https://github.com/atalero)**
