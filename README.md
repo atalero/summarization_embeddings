@@ -6,15 +6,15 @@ The Get to the Point Text Summarization algorithm uses a mix of abstractive and 
 * **Baseline Model** (same as original Get to the Point Code)
 * **Word2Vec (Skipgram)** - Efficient Estimation of Word Representations in Vector Space [paper](https://arxiv.org/abs/1301.3781)
 
-		We trained these vectors on a subset of our data. 
+	We trained these vectors on a subset of our data. 
 
 * **GloVe Embeddings** - Global Vectors for Word Representation [paper](https://nlp.stanford.edu/projects/glove/)
 
-		The dataset we used is 300 dimensional vectors from glove.6B.zip which can be downloaded [here](https://nlp.stanford.edu/projects/glove/). 
+	The dataset we used is 300 dimensional vectors from glove.6B.zip which can be downloaded [here](https://nlp.stanford.edu/projects/glove/). 
 
 * **ELMo** - Deep contextualized word representations - [paper](https://arxiv.org/abs/1802.05365) 
 
-		This method uses task specific learning. ELMo returns three vectors (one from ELMo embeddings baed on character convolutions, one for a forward language model, backward language model), our model learns the correct task specific weights as defined in the paper.
+	This method uses task specific learning. ELMo returns three vectors (one from ELMo embeddings baed on character convolutions, one for a forward language model, backward language model), our model learns the correct task specific weights as defined in the paper.
 
 ## Instructions for Running
 * run on tf version 1.13.1 
