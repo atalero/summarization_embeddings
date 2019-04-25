@@ -61,7 +61,7 @@ This script will produce two pickle files, onw will be the embedding matrix and 
 
 ```python emb.py --vocab_file=/path/to/vocab --emb_dir=./log --v_size==50000```
 
-which will then be loaded into ```run_summarization.py```.
+This file with produce a pickel file of word embeddings in the same directory which our model will be expecting. This will then be loaded into ```run_summarization.py```.
 
 ```
 python run_summarization.py --mode=train --data_path=/path/to/chunked/train_* --vocab_path=/path/to/vocab --log_root=/path/to/a/log/directory --exp_name=myexperiment --skipgram= True
