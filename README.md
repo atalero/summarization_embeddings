@@ -6,7 +6,7 @@ The Get to the Point Text Summarization algorithm uses a mix of abstractive and 
 * **Baseline Model (same as original Get to the Point Code)**
 * **Word2Vec (Skipgram) - Efficient Estimation of Word Representations in Vector Space [paper](https://arxiv.org/abs/1301.3781)**
 
-	We trained these vectors on a subset of our data. 
+	We trained these vectors on a subset of our data (~40,000 article, 30 million words) with an embedding dimension dimension of 300.
 
 * **GloVe Embeddings - Global Vectors for Word Representation [paper](https://nlp.stanford.edu/projects/glove/)**
 
@@ -57,11 +57,11 @@ run:
 
 ```python skip.py --file_dir==/path/to/chunked/train_* --emb_num=300 --num_chunks=20```
 
-This script will produce two pickle files, onw will be the embedding matrix and the second will be the labels. These in turn will be used by the emb.py file to produce the word embeddings for the model. To create the final word embeddings run the meb.py file specifying path to vocab file and also the directory for the embedding file from the previous code which will be in a folder named "log". Additioanlly, you could also specifiy the vocabualry size which by default is 50000. Run:
+This script will produce two pickle files, onw will be the embedding matrix and the second will be the labels. These in turn will be used by the emb.py file to produce the word embeddings for the model. To create the final word embeddings run the meb.py file specifying path to vocab file and also the directory for the embedding file from the previous code which will be in a folder named "log". Additionally, you could also specifiy the vocabulary size which by default is 50000. Run:
 
 ```python emb.py --vocab_file=/path/to/vocab --emb_dir=./log --v_size==50000```
 
-This file with produce a pickel file of word embeddings in the same directory which our model will be expecting. This will then be loaded into ```run_summarization.py```.
+This file with produce a pickle file of word embeddings in the same directory which our model will be expecting. This will then be loaded into ```run_summarization.py```.
 
 ```
 python run_summarization.py --mode=train --data_path=/path/to/chunked/train_* --vocab_path=/path/to/vocab --log_root=/path/to/a/log/directory --exp_name=myexperiment --skipgram= True
