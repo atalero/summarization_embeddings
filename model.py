@@ -248,9 +248,8 @@ class SummarizationModel(object):
           enc_batch_words = tf.nn.embedding_lookup(params=embedding, ids=self._enc_batch)[:,:,0]
           dec_batch_words = tf.nn.embedding_lookup(params=embedding, ids=self._dec_batch)[:,:,0]
           emb_enc_inputs = elmo(inputs={"tokens": enc_batch_words, "sequence_len": tf.constant(hps.max_enc_steps, shape=(hps.batch_size, ))},  signature="tokens", as_dict=True)["elmo"]
-          emb_dec_inputs = elmo(inputs={"tokens": dec_batch_words, "sequence_len": tf.constant(hps.max_dec_steps, shape=(hps.batch_size, ))}, signature="tokens", as_dict=True)["elmo"]
-          emb_dec_inputs_t = [emb_dec_inputs[:,x,:] for x in range(hps.max_dec_steps)]
-          emb_dec_inputs = emb_dec_inputs_t
+          emb_dec_inputs = [elmo(inputs ={"tokens": [x] , "sequence_len": tf.constant([hps.batch_size])}, signature="tokens", as_dict=True)["elmo"][0] for x in tf.unstack(dec_batch_words, axis=1)]
+
 
       # Add the encoder.
       enc_outputs, fw_st, bw_st = self._add_encoder(emb_enc_inputs, self._enc_lens)
