@@ -230,7 +230,7 @@ class SummarizationModel(object):
 
 
       if FLAGS.skipgram:
-        pickle_in = open("./data/skipgram_matrix.p","rb")
+        pickle_in = open("./skipgram_matrix.p","rb")
         skipgram_matrix = pickle.load(pickle_in)[:50000]
         skipgram_cons = tf.constant(skipgram_matrix, name="skipgram_cons")
         with tf.variable_scope('embedding'):
