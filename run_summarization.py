@@ -40,7 +40,7 @@ flags.DEFINE_string('glove_file', '', 'glove file to be read in')
 flags.DEFINE_boolean('elmo', False, 'switch to elmo embedding')
 flags.DEFINE_boolean('glove', False, 'switch to glove embedding')
 flags.DEFINE_boolean('bert', False, 'switch to bert embedding')
-flags.DEFINE_boolean('skipgram', True, 'switch to skipgram embedding')
+flags.DEFINE_boolean('skipgram', False, 'switch to skipgram embedding')
 
 # Where to find data
 flags.DEFINE_string('data_path', '', 'Path expression to tf.Example datafiles. Can include wildcards to access multiple datafiles.')
@@ -58,7 +58,7 @@ flags.DEFINE_string('exp_name', '', 'Name for experiment. Logs will be saved in 
 flags.DEFINE_integer('hidden_dim', 128, 'dimension of RNN hidden states')
 flags.DEFINE_integer('emb_dim', 400, 'dimension of word embeddings')
 flags.DEFINE_integer('batch_size', 8, 'minibatch size')
-flags.DEFINE_integer('max_enc_steps', 300, 'max timesteps of encoder (max source text tokens)')
+flags.DEFINE_integer('max_enc_steps', 400, 'max timesteps of encoder (max source text tokens)')
 flags.DEFINE_integer('max_dec_steps', 100, 'max timesteps of decoder (max summary tokens)')
 flags.DEFINE_integer('beam_size', 4, 'beam size for beam search decoding.')
 flags.DEFINE_integer('min_dec_steps', 35, 'Minimum sequence length of generated summary. Applies only for beam search decoding mode')
