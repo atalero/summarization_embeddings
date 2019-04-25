@@ -241,58 +241,16 @@ class SummarizationModel(object):
 
 
       if FLAGS.elmo:
-        #pickle_in = open("./data/word_to_id.p","rb")
-        #word_to_id = pickle.load(pickle_in)
-        pickle_in = open("./data/id_to_word.p","rb")
-        id_to_word = pickle.load(pickle_in)
-        table = tf.contrib.lookup.HashTable(tf.contrib.lookup.KeyValueTensorInitializer(list(id_to_word.keys()), list(id_to_word.values())), default_value='[UNK]')
-
-        #table.init.run()
-        enc_batch_words = table.lookup(self._enc_batch)
-
-        dec_batch_words = table.lookup(self._enc_batch)
-
         with tf.variable_scope('embedding'):
-            pass
-
-
-          emb_enc_inputs = elmo(inputs ={"tokens":enc_batch_words , "sequence_len": tf.constant(hps.max_enc_steps,shape=(hps.batch_size,))}, signature="tokens", as_dict=True)["elmo"]
-
-
-          emb_dec_inputs = [elmo(inputs ={"tokens":[x] , "sequence_len": tf.Variable([tf.size(x)])}, signature="tokens", as_dict=True)["elmo"][0] for x in tf.unstack(dec_batch_words, axis=1)]
-          #enc_sentence = tf.constant([], dtype="string")
-          #dec_sentence = tf.constant([], dtype="string")
-          #enc_vectors = tf.constant(0, shape= [1,1024], dtype = "float32")
-          #dec_vectors = tf.constant(0, shape= [1,1024], dtype = "float32")
-          #for article in tf.unstack(enc_batch_words, axis=1):
-          #  for word in tf.unstack(article, axis=0):
-          #    enc_vectors, enc_sentence = tf.cond(tf.equal(b'.',word), lambda: f1(enc_sentence, [word], enc_vectors), lambda: f2(enc_sentence, [word], enc_vectors))
-          #enc_vectors, enc_sentence = tf.cond(tf.equal(tf.size(enc_sentence),0), lambda: f2_end(enc_sentence, enc_vectors), lambda: f1_end(enc_sentence, enc_vectors))
-          #emb_enc_inputs = enc_vectors[1:]
-
-          #for article in tf.unstack(dec_batch_words, axis=1):
-          #  for word in tf.unstack(article, axis=0):
-          #    dec_vectors, dec_sentence = tf.cond(tf.equal(b'.',word), lambda: f1(dec_sentence, [word], dec_vectors), lambda: f2(dec_sentence, [word], dec_vectors))
-          #dec_vectors, dec_sentence = tf.cond(tf.equal(tf.size(dec_sentence),0), lambda: f2_end(dec_sentence, dec_vectors), lambda: f1_end(dec_sentence, dec_vectors))
-
-          #emb_dec_inputs = dec_vectors[1:]
-=======
-        dec_batch_words = table.lookup(self._dec_batch)
-
-        with tf.variable_scope('embedding'):
+          vocab = Vocab('./data/vocab', 50000)
+          strings = tf.constant(np.array(list(vocab._word_to_id.keys())).reshape(-1,1), dtype = tf.string)
+          embedding = tf.get_variable('embedding2', dtype=tf.string, initializer=strings, trainable=False)
+          enc_batch_words = tf.nn.embedding_lookup(params=embedding, ids=self._enc_batch)[:,:,0]
+          dec_batch_words = tf.nn.embedding_lookup(params=embedding, ids=self._dec_batch)[:,:,0]
           emb_enc_inputs = elmo(inputs={"tokens": enc_batch_words, "sequence_len": tf.constant(hps.max_enc_steps, shape=(hps.batch_size, ))},  signature="tokens", as_dict=True)["elmo"]
           emb_dec_inputs = elmo(inputs={"tokens": dec_batch_words, "sequence_len": tf.constant(hps.max_dec_steps, shape=(hps.batch_size, ))}, signature="tokens", as_dict=True)["elmo"]
           emb_dec_inputs_t = [emb_dec_inputs[:,x,:] for x in range(hps.max_dec_steps)]
           emb_dec_inputs = emb_dec_inputs_t
-          #emb_dec_inputs = [elmo(inputs ={"tokens": dec_batch_words , "sequence_len": tf.constant([hps.batch_size])}, signature="tokens", as_dict=True)["elmo"][0] for x in tf.unstack(dec_batch_words, axis=1)]
->>>>>>> c122d46ebf67d4e7b9c938004729dbadf11ccc96
-
-      # Add embedding matrix (shared by the encoder and decoder inputs)
-      #with tf.variable_scope('embedding'):
-        #embedding = tf.get_variable('embedding', [vsize, hps.emb_dim], dtype=tf.float32, initializer=self.trunc_norm_init)
-        #if hps.mode=="train": self._add_emb_vis(embedding) # add to tensorboard
-        emb_enc_inputs = tf.nn.embedding_lookup(params=embedding, ids=self._enc_batch) # tensor with shape (batch_size, max_enc_steps, emb_size)
-        emb_dec_inputs = [tf.nn.embedding_lookup(params=embedding, ids=x) for x in tf.unstack(self._dec_batch, axis=1)] # list length max_dec_steps containing shape (batch_size, emb_size)
 
       # Add the encoder.
       enc_outputs, fw_st, bw_st = self._add_encoder(emb_enc_inputs, self._enc_lens)
