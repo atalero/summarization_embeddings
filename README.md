@@ -18,6 +18,9 @@ The Get to the Point Text Summarization algorithm uses a mix of abstractive and 
 
 	This method uses task specific learning. ELMo returns three vectors (one from ELMo embeddings baed on character convolutions, one for a forward language model, backward language model), our model learns the correct task specific weights as defined in the paper.
 
+## Results
+![alt text](https://github.com/atalero/summarization_embeddings/blob/master/results.png)
+
 ## Instructions for Training
 * run on tf version 1.13.1 
 * this version uses Python 3.7
