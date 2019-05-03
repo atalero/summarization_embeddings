@@ -1,4 +1,4 @@
-# Comparing Input Embeddings to Sequence-to-Sequence for Text Summarization
+# Comparing Embeddings for Text Summarization   
 Code for improving the [CL 2017 paper "Get To The Point: Summarization with Pointer-Generator Networks."](https://arxiv.org/abs/1704.04368) Different forms of word embeddings are integrated into the text summarization model. This code includes changes to the [repo](https://github.com/abisee/pointer-generator) by the paper's authors. It also has a modified version of a code for this [repo](https://github.com/tensorflow/tensorflow/blob/master/tensorflow/examples/tutorials/word2vec/word2vec_basic.py) from skipgram training.
 
 See our paper [here](https://drive.google.com/open?id=1pxeDOwwq3jP1M4OduLe3m--TK86mhHxg).
