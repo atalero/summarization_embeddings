@@ -8,7 +8,7 @@ The Get to the Point Text Summarization algorithm uses a mix of abstractive and 
 * **Baseline Model (same as original Get to the Point Code)**
 * **Word2Vec (Skipgram) - Efficient Estimation of Word Representations in Vector Space [paper](https://arxiv.org/abs/1301.3781)**
 
-	We trained these vectors on a subset of our data (~40,000 article, 30 million words) with an embedding dimension dimension of 300.
+	We trained these vectors on a subset of our data (~40,000 article, 30 million words) with an embedding dimension of 300.
 
 * **GloVe Embeddings - Global Vectors for Word Representation [paper](https://nlp.stanford.edu/projects/glove/)**
 
@@ -16,7 +16,7 @@ The Get to the Point Text Summarization algorithm uses a mix of abstractive and 
 
 * **ELMo - Deep contextualized word representations - [paper](https://arxiv.org/abs/1802.05365)** 
 
-	This method uses task specific learning. ELMo returns three vectors (one from ELMo embeddings baed on character convolutions, one for a forward language model, backward language model), our model learns the correct task specific weights as defined in the paper.
+	This method uses task-specific learning. ELMo returns three vectors (one from ELMo embeddings baed on character convolutions, one for a forward language model, backward language model), our model learns the correct task specific weights as defined in the paper.
 
 ## Results
 ![alt text](https://github.com/atalero/summarization_embeddings/blob/master/results.png)
@@ -56,13 +56,13 @@ python run_summarization.py --mode=train --data_path=/path/to/chunked/train_* --
 ```
 **Word2Vec (skipgram)**
 
-To produce all the embedding matrices and save them to the local directory in lag folder. Additionally the directory of the chucked data, along with embedding dimension size and number of file to read are taken as input. The default embeddin size is 300 and default number of iles is 20, the log directory is a "log" folder in the same directory and it will try to look for data in the "data" directory in the same folder if none is specified.
+To produce all the embedding matrices and save them to the local directory in log folder. Additionally the directory of the chucked data, along with embedding dimension size and number of file to read are taken as input. The default embedding size is 300 and default number of files is 20, the log directory is a "log" folder in the same directory and it will try to look for data in the "data" directory in the same folder if none is specified.
 
 run: 
 
 ```python skip.py --file_dir==/path/to/chunked/train_* --emb_num=300 --num_chunks=20```
 
-This script will produce two pickle files, onw will be the embedding matrix and the second will be the labels. These in turn will be used by the emb.py file to produce the word embeddings for the model. To create the final word embeddings run the meb.py file specifying path to vocab file and also the directory for the embedding file from the previous code which will be in a folder named "log". Additionally, you could also specifiy the vocabulary size which by default is 50000. Run:
+This script will produce two pickle files, one will be the embedding matrix and the second will be the labels. These in turn will be used by the emb.py file to produce the word embeddings for the model. To create the final word embeddings run the emb.py file specifying path to vocab file and also the directory for the embedding file from the previous code which will be in a folder named "log". Additionally, you could also specifiy the vocabulary size which by default is 50000. Run:
 
 ```python emb.py --vocab_file=/path/to/vocab --emb_dir=./log --v_size==50000```
 
